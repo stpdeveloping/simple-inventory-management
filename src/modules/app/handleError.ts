@@ -5,11 +5,11 @@ import { errorMap } from "./errorMap";
 import httpStatus from "http-status";
 
 export const handleError: ErrorRequestHandler =
-    ((err: typeof errors.E_VALIDATION_ERROR | ExpressError, _, res, _2) => {
+    ((err: typeof errors.E_VALIDATION_ERROR | ExpressError<string>, _, res, _2) => {
         if (err instanceof errors.E_VALIDATION_ERROR)
             res.status(err.status).send(err.messages);
         else {
-            const { status, body } = err as ExpressError;
+            const { status, body } = err as ExpressError<string>;
             res.status(status ?? httpStatus.INTERNAL_SERVER_ERROR).send([{
                 message: errorMap[status]?.(body) ?? body ??
                     httpStatus[`500_MESSAGE`]

@@ -20,7 +20,8 @@ export const nestedCqrs = createCqrs({
                 eq(productDbSchema.id, payload.id));
             const selectedProduct = queryResult[0];
             if (!selectedProduct)
-                throw <ExpressError>{ status: httpStatus.NOT_FOUND, body: `Product` }
+                throw <ExpressError<string>>{
+                    status: httpStatus.NOT_FOUND, body: `Product`}
             return selectedProduct;
         }
     },

@@ -54,7 +54,7 @@ export const cqrs = createCqrs({
       });
       const calculatedStock = selectedProduct.stock - payload.amount;
       if (calculatedStock < 0)
-        throw <ExpressError>{
+        throw <ExpressError<string>>{
           status: httpStatus.UNPROCESSABLE_ENTITY,
           body: `Too small stock`
         }
@@ -88,7 +88,7 @@ export const cqrs = createCqrs({
             name: getProductQueryName,
             payload: { id: product.id }
           });;
-          const { status, body } = err as ExpressError;
+          const { status, body } = err as ExpressError<string>;
           const errorMsg = status === httpStatus.UNPROCESSABLE_ENTITY ?
             body : errorMap[status]();
           productsWithPossiblyUpdatedStock.push({

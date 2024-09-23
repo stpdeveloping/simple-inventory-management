@@ -8,9 +8,9 @@ export const createSuccessfulOrderWithProducts = (
     successfulProductFromOrder: SuccessfulProductFromOrder,
     productsWithPossiblyUpdatedStock: ProductWithPossiblyUpdatedStock[]) => {
     if (!successfulProductFromOrder) {
-        throw <ExpressError>{
+        throw <ExpressError<object>>{
           status: httpStatus.UNPROCESSABLE_ENTITY,
-          body: `All orders are invalid`
+          body: productsWithPossiblyUpdatedStock
         }
       }
       return <SuccessfulOrderWithProducts>{

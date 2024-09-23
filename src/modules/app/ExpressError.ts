@@ -1,7 +1,7 @@
-export type ExpressError = {
+export type ExpressError<TBody> = {
     expose: boolean;
     statusCode: number;
     status: number;
-    body: string;
+    body: TBody;
     type: string;
 }
