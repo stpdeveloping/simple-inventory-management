@@ -11,7 +11,6 @@ import { ExpressError } from "./ExpressError";
 import { restockProductCommandName } from "../business/product/command-names/restockProductCommandName";
 import { createOrderWithProductsCommandName } from "../business/order/command-names/createOrderWithProductsCommandName";
 import { OrderWithProducts } from "../business/order/models/OrderWithProducts";
-import { SuccessfulOrderWithProducts } from "../business/order/models/SuccessfulOrderWithProducts";
 import { ProductWithUpdatedStock } from "../business/product/models/ProductWithUpdatedStock";
 import { ProductWithPossiblyUpdatedStock } from "../business/product/models/ProductWithPossiblyUpdatedStock";
 import { errorMap } from "./errorMap";
@@ -20,6 +19,7 @@ import { sellProductCommandName } from "../business/product/command-names/sellPr
 import { getProductQueryName } from "../business/product/query-names/getProductQueryName";
 import { createProductFromOrder } from "../business/order/command-names/createProductFromOrder";
 import { SuccessfulProductFromOrder } from "../business/order/models/SuccessfulProductFromOrder";
+import { createSuccessfulOrderWithProducts } from "./createSuccessfulOrderWithProducts";
 
 export const cqrs = createCqrs({
   queryHandlers: {
@@ -71,15 +71,16 @@ export const cqrs = createCqrs({
     [createOrderWithProductsCommandName]: async ({ payload }:
       Command<OrderWithProducts>) => {
       const productsWithPossiblyUpdatedStock: ProductWithPossiblyUpdatedStock[] = [];
-      let successfulProductOrder: SuccessfulProductFromOrder = null;
+      let successfulProductFromOrder: SuccessfulProductFromOrder = null;
       for(const product of payload.products) {
         try {
-          successfulProductOrder = await nestedCqrs.buses.commandsBus.execute({
+          successfulProductFromOrder = await nestedCqrs.buses.commandsBus.execute({
             name: createProductFromOrder,
             payload: { ...product, productId: product.id, customerId: payload.customerId }
           });
           productsWithPossiblyUpdatedStock.push({
-            id: successfulProductOrder!.productId, stock: successfulProductOrder!.stock
+            id: successfulProductFromOrder!.productId,
+            stock: successfulProductFromOrder!.stock
           });
         }
         catch (err) {
@@ -96,16 +97,8 @@ export const cqrs = createCqrs({
           });
         }
       };
-      if (!successfulProductOrder) {
-        throw <ExpressError>{
-          status: httpStatus.UNPROCESSABLE_ENTITY,
-          body: `All orders are invalid`
-        }
-      }
-      return <SuccessfulOrderWithProducts>{
-        orderId: successfulProductOrder.orderId,
-        products: productsWithPossiblyUpdatedStock
-      }
+      return createSuccessfulOrderWithProducts(successfulProductFromOrder,
+        productsWithPossiblyUpdatedStock);
     }
   }
 });
