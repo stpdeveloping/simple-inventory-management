@@ -12,6 +12,7 @@ import { restockProductCommandName } from "./command-names/restockProductCommand
 import { ProductForStockUpdate } from "./models/ProductForStockUpdate";
 import { sellProductCommandName } from "./command-names/sellProductCommandName";
 import { productForStockUpdateValidator } from "./validation/productForStockUpdateValidator";
+import { ProductWithUpdatedStock } from "./models/ProductWithUpdatedStock";
 
 export const addProductRoutes = () => {
     router.get(moduleRoute, async (_, rsp) => {
@@ -28,7 +29,7 @@ export const addProductRoutes = () => {
         rsp.send(insertedProductId);
     });
     router.post(`${moduleRoute}/:id/restock`, async ({ body, params }:
-        Request<{id: string}, Pick<typeof productDbSchema.$inferSelect, `id`>,
+        Request<{id: string}, ProductWithUpdatedStock,
         Omit<ProductForStockUpdate, `id`>>, rsp) => {
         await productForStockUpdateValidator.validate({ ...body, id: +params.id });
         const productWithIncreasedStock = await getCommandBus().execute({
@@ -38,7 +39,7 @@ export const addProductRoutes = () => {
         rsp.send(productWithIncreasedStock);
     });
     router.post(`${moduleRoute}/:id/sell`, async ({ body, params }:
-        Request<{id: string}, Pick<typeof productDbSchema.$inferSelect, `id`>,
+        Request<{id: string}, ProductWithUpdatedStock,
         Omit<ProductForStockUpdate, `id`>>, rsp) => {
         await productForStockUpdateValidator.validate({ ...body, id: +params.id });
         const productWithDecreasedStock = await getCommandBus().execute({

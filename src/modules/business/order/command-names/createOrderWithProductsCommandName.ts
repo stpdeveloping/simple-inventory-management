@@ -1,0 +1,1 @@
+export const createOrderWithProductsCommandName = `create-order-with-products` as const;

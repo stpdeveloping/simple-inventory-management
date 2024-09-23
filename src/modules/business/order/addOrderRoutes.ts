@@ -1,20 +1,20 @@
 import { getCommandBus } from "../../shared/getCommandBus";
 import { router } from "../../shared/router";
-import { createOrderCommandName } from "./command-names/createOrderCommandName";
-import { OrderForInsert } from "./models/OrderForInsert";
-import { SuccessfulOrder } from "./models/SuccessfulOrder";
+import { createOrderWithProductsCommandName } from "./command-names/createOrderWithProductsCommandName";
+import { OrderWithProducts } from "./models/OrderWithProducts";
+import { SuccessfulOrderWithProducts } from "./models/SuccessfulOrderWithProducts";
 import { moduleRoute } from "./moduleRoute";
 import { Request } from 'express';
-import { orderForInsertValidator } from "./validation/orderForInsertValidator";
+import { orderWithProductsValidator } from "./validation/orderWithProductsValidator";
 
 export const addOrderRoutes = () => {
     router.post(`${moduleRoute}`, async ({ body }:
-        Request<never, SuccessfulOrder, OrderForInsert>, rsp) => {
-        await orderForInsertValidator.validate(body);
-        const successfulOrder = await getCommandBus().execute({
-            name: createOrderCommandName,
+        Request<never, SuccessfulOrderWithProducts, OrderWithProducts>, rsp) => {
+        await orderWithProductsValidator.validate(body);
+        const successfulOrders = await getCommandBus().execute({
+            name: createOrderWithProductsCommandName,
             payload: body
         });
-        rsp.send(successfulOrder);
+        rsp.send(successfulOrders);
     });
 }
