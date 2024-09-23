@@ -1,9 +1,9 @@
 import { env } from "../../../env";
-import { optimizeApp } from './optimizeApp';
+import { optimizeApp } from './middlewares/optimizeApp';
 import { initializeDb } from "./initializeDb";
 import express from "express";
 import { router } from "../shared/router";
-import { handleError } from "./handleError";
+import { handleError } from "./middlewares/handleError";
 import { addOrderRoutes } from "../business/order/addOrderRoutes";
 import { addProductRoutes } from "../business/product/addProductRoutes";
 

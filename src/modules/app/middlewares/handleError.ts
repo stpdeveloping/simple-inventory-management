@@ -1,7 +1,7 @@
 import { errors } from "@vinejs/vine";
 import { ErrorRequestHandler } from "express";
-import { ExpressError } from "./ExpressError";
-import { errorMap } from "./errorMap";
+import { ExpressError } from "../ExpressError";
+import { errorMap } from "../errorMap";
 import httpStatus from "http-status";
 
 export const handleError: ErrorRequestHandler =
