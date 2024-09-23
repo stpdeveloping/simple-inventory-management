@@ -1,0 +1,1 @@
+export const restockProductCommandName = `restock-product` as const;
