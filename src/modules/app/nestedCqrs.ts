@@ -9,9 +9,9 @@ import { eq } from "drizzle-orm";
 import { ProductToFind } from "../business/product/models/ProductToFind";
 import { ExpressError } from "./ExpressError";
 import httpStatus from "http-status";
-import { createProductFromOrder } from "../business/order/command-names/createProductFromOrder";
-import { ProductFromOrder } from "../business/order/models/ProductFromOrder";
-import { SuccessfulProductFromOrder } from "../business/order/models/SuccessfulProductFromOrder";
+import { updateProductFromOrder } from "../business/product/command-names/updateProductFromOrder";
+import { ProductFromOrder } from "../business/product/models/ProductFromOrder";
+import { SuccessfulProductFromOrder } from "../business/product/models/SuccessfulProductFromOrder";
 
 export const nestedCqrs = createCqrs({
     queryHandlers: {
@@ -25,7 +25,7 @@ export const nestedCqrs = createCqrs({
         }
     },
     commandHandlers: {
-        [createProductFromOrder]: async ({ payload }: Command<ProductFromOrder>) => {
+        [updateProductFromOrder]: async ({ payload }: Command<ProductFromOrder>) => {
             const { stock } = await getCommandBus().execute({
                 name: sellProductCommandName,
                 payload: payload

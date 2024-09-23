@@ -17,8 +17,8 @@ import { errorMap } from "./errorMap";
 import { nestedCqrs } from "./nestedCqrs";
 import { sellProductCommandName } from "../business/product/command-names/sellProductCommandName";
 import { getProductQueryName } from "../business/product/query-names/getProductQueryName";
-import { createProductFromOrder } from "../business/order/command-names/createProductFromOrder";
-import { SuccessfulProductFromOrder } from "../business/order/models/SuccessfulProductFromOrder";
+import { updateProductFromOrder } from "../business/product/command-names/updateProductFromOrder";
+import { SuccessfulProductFromOrder } from "../business/product/models/SuccessfulProductFromOrder";
 import { createSuccessfulOrderWithProducts } from "./createSuccessfulOrderWithProducts";
 
 export const cqrs = createCqrs({
@@ -75,7 +75,7 @@ export const cqrs = createCqrs({
       for(const product of payload.products) {
         try {
           successfulProductFromOrder = await nestedCqrs.buses.commandsBus.execute({
-            name: createProductFromOrder,
+            name: updateProductFromOrder,
             payload: { ...product, productId: product.id, customerId: payload.customerId }
           });
           productsWithPossiblyUpdatedStock.push({

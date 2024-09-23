@@ -1,5 +1,5 @@
-import { productDbSchema } from '../../product/productDbSchema';
-import { orderDbSchema } from '../orderDbSchema';
+import { productDbSchema } from '../productDbSchema';
+import { orderDbSchema } from '../../order/orderDbSchema';
 
 export type SuccessfulProductFromOrder =
     (Omit<typeof orderDbSchema.$inferSelect, `customerId`> &

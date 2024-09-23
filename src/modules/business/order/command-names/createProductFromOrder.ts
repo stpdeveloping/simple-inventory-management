@@ -1,1 +1,0 @@
-export const createProductFromOrder = `create-product-from-order` as const;
