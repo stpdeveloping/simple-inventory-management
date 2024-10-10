@@ -1,0 +1,1 @@
+export const getProductsQueryName = `get-products` as const;

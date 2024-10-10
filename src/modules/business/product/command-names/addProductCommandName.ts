@@ -1,0 +1,1 @@
+export const addProductCommandName = `add-product` as const;

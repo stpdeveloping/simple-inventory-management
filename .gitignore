@@ -128,3 +128,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+simple-inventory-management.db-shm
+simple-inventory-management.db
+simple-inventory-management.db-wal

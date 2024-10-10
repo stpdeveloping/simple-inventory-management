@@ -1,0 +1,1 @@
+export const updateProductFromOrder = `update-product-from-order` as const;

@@ -1,0 +1,1 @@
+export const moduleRoute = `/products`;
